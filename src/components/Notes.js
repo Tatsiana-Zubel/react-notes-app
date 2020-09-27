@@ -1,6 +1,7 @@
 import React from 'react';
+import ContentEditable from 'react-contenteditable'
 
-export const Notes = ({notes, onRemove}) => {
+export const Notes = ({ notes, onRemove, onEdit }) => {
     return (
         <ul className="list-group">
             {notes.map(note => (
@@ -8,17 +9,36 @@ export const Notes = ({notes, onRemove}) => {
                     className="list-group-item note"
                     key={note.id}
                 >
-                    <div>
-                        <strong>{note.title}</strong>
+                    <div >
                         <small>{new Date().toLocaleDateString()}</small>
+                        &nbsp;<strong>{note.name}</strong>
+                        <ContentEditable
+                            html={note.message}
+                            disabled={!note.editable}
+                            className={note.editable ? 'message editable' : 'message'}
+                            onChange={this.handleChange}
+                        />
                     </div>
-                    <button
-                        type="button"
-                        className="btn btn-outline-danger btn-sn"
-                        onClick={() => onRemove(note.id)}
-                    >
-                        &times;
-                   </button>
+                    <div>
+                        <button
+                            type="button"
+                            className="btn btn-info m-2"
+                            onClick={() => onEdit(note)}
+                        >
+                        {note.editable
+                            ? 'Save'
+                            : 'Edit'
+                        }
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-danger m-2"
+                            onClick={() => onRemove(note.id)}
+                        >
+                            &times;
+                        </button>
+
+                    </div>
                 </li>
             ))}
         </ul>

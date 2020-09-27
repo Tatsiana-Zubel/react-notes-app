@@ -2,7 +2,7 @@ import React, {useReducer} from 'react';
 import {FirebaseContext} from './firebaseContext'
 import axios from 'axios';
 import { firebaseReducer } from './firebaseReduser';
-import {SHOW_LOADER, REMOVE_NOTE, ADD_NOTE, FETCH_NOTES} from '../types'
+import {SHOW_LOADER, REMOVE_NOTE, ADD_NOTE, FETCH_NOTES, EDIT_NOTE} from '../types'
 
 const url = process.env.REACT_APP_NOTES_APP_DB_URL
 
@@ -20,22 +20,26 @@ export const FirebaseState = ({children}) => {
     const fetchNotes = async () => {
         showLoader()
         const res = await axios.get(`${url}/notes.json`)
-        
-       const payload =  Object.keys(res.data).map(key => {
-            return {
-                ...res.data[key], 
-                id: key
-            }
-        })
+        var payload = []
+        if (res.data !== null) {
+            payload = Object.keys(res.data).reverse().map(key => {
+                return {
+                    ...res.data[key], 
+                    id: key
+                }
+            })
+        }
+       
         dispatch({type: FETCH_NOTES, payload})
     }
 
-    const addNote = async title => {
+    const addNote = async (name, message) => {
         const note = {
-            title, date: new Date().toJSON()
+            name, message, date: new Date().toJSON(), editable: false
         }
         try {
             const res = await axios.post(`${url}/notes.json`, note)
+            console.log(res);
             const payload = {
                 ...note,
                 id: res.data.name
@@ -48,12 +52,21 @@ export const FirebaseState = ({children}) => {
 
     const removeNote = async id => {
         await axios.delete(`${url}/notes/${id}.json`)
-        dispatch ({type: REMOVE_NOTE, playload: id})
+        dispatch ({type: REMOVE_NOTE, payload: id})
+    }
+
+    const editNote = async note => {
+        if (note.editable) {
+            await axios.put(`${url}/notes/${note.id}.json`, note)
+            dispatch ({type: EDIT_NOTE, payload: note})
+        }else{
+            dispatch ({type: EDIT_NOTE, payload: note})
+        }
     }
 
     return (
         <FirebaseContext.Provider value={{
-            showLoader, fetchNotes, addNote, removeNote,
+            showLoader, fetchNotes, addNote, removeNote, editNote,
             loading: state.loading,
             notes: state.notes 
 

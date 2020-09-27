@@ -3,36 +3,54 @@ import {AlertContext} from '../context/alert/alertContext';
 import {FirebaseContext} from '../context/firebase/firebaseContext'
 
 export const Form = () => {
-    const [value, setValue] = useState('')
+    const [name, setName] = useState('')
+    const [message, setMessage] = useState('')
     const alert = useContext(AlertContext)
     const firebase =  useContext(FirebaseContext)
 
     const submitHandler = event => {
         event.preventDefault()
 
-        if (value.trim()) {
-            firebase.addNote(value.trim()).then (() => {
-                alert.show('Note was created successfully!', 'success')
+        if (name.trim() && message.trim()) {
+            firebase.addNote(name.trim(), message.trim()).then (() => {
+                alert.show('Note was created!', 'success')
             }).catch(() => {
                 alert.show('Ups! Something went wrong...', 'danger')
             })
-            setValue('')
+            setName('')
         } else {
-            alert.show('Enter the name')
+            alert.show('All field are required')
         }
     }
 
     return (
-        <form onSubmit={submitHandler}>
+        <form>
             <div className="form-group">
                 <input
                     type="text"
                     className="form-control"
                     placeholder="Name"
-                    value = {value}
-                    onChange = {e => setValue(e.target.value)}
+                    value = {name}
+                    onChange = {e => setName(e.target.value)}
                 />
             </div>
+            <div className="form-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Message"
+                    value = {message}
+                    onChange = {e => setMessage(e.target.value)}
+                />
+            </div>
+            <button 
+            className="btn btn-primary" 
+            type="submit" 
+            value="Submit" 
+            onClick={submitHandler}
+            >Create
+            </button>
         </form>
+                
     )
 }
