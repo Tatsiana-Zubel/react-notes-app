@@ -18,8 +18,9 @@ export const Form = () => {
                 alert.show('Ups! Something went wrong...', 'danger')
             })
             setName('')
+            setMessage('')
         } else {
-            alert.show('All field are required')
+            alert.show('All fields are required')
         }
     }
 
@@ -30,27 +31,29 @@ export const Form = () => {
                     type="text"
                     className="form-control"
                     placeholder="Name"
+                    maxLength="50"
                     value = {name}
                     onChange = {e => setName(e.target.value)}
                 />
             </div>
             <div className="form-group">
-                <input
+                <textarea
                     type="text"
                     className="form-control"
                     placeholder="Message"
+                    rows="4"
+                    maxLength="1000"
                     value = {message}
                     onChange = {e => setMessage(e.target.value)}
                 />
             </div>
             <button 
-            className="btn btn-primary" 
-            type="submit" 
-            value="Submit" 
-            onClick={submitHandler}
-            >Create
+                className="btn btn-primary" 
+                type="submit" 
+                value="Submit" 
+                onClick={submitHandler}
+                >Create
             </button>
-        </form>
-                
+        </form>         
     )
 }

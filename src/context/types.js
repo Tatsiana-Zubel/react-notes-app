@@ -5,6 +5,7 @@ export const ADD_NOTE = 'ADD_NOTE';
 export const FETCH_NOTES = 'FETCH_NOTES';
 export const EDIT_NOTE = 'EDIT_NOTE';
 export const REMOVE_NOTE = 'REMOVE_NOTE';
+export const REFRESH_NOTE = 'REFRESH_NOTE';
 
 
 

@@ -6,7 +6,6 @@ import { Alert } from './components/Alert';
 import { AlertState } from './context/alert/alertState';
 import {FirebaseState} from './context/firebase/FirebaseState'
 
-
 function App() {
   return (
     <FirebaseState>

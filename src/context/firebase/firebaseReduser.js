@@ -1,4 +1,4 @@
-import { SHOW_LOADER, ADD_NOTE, FETCH_NOTES, REMOVE_NOTE, EDIT_NOTE } from '../types'
+import { SHOW_LOADER, ADD_NOTE, FETCH_NOTES, REMOVE_NOTE, EDIT_NOTE, REFRESH_NOTE } from '../types'
 
 const handlers = {
     [SHOW_LOADER]: state => ({ ...state, loading: true }),
@@ -15,6 +15,10 @@ const handlers = {
         ...state,
         notes: getAfterEditable(state.notes.slice(), payload)
     }),
+    [REFRESH_NOTE]: (state, { payload }) => ({ 
+        ...state, 
+        notes: getBeforeEditable(state.notes.slice(), payload)
+    }),
     DEFAULT: state => state
 }
 
@@ -26,8 +30,15 @@ export const firebaseReducer = (state, action) => {
 const getAfterEditable = (notes, payload) => {
     const noteIndex = Object.values(notes).findIndex(obj => obj.id === payload.id)
     if (noteIndex !== -1) {
-        notes[noteIndex].editable = !notes[noteIndex].editable
         notes[noteIndex].message = payload.message
+    }
+    return notes
+}
+
+const getBeforeEditable = (notes, payload) => {
+    const noteIndex = Object.values(notes).findIndex(obj => obj.id === payload.id)
+    if (noteIndex !== -1) {
+        notes[noteIndex].editable = payload.editable
     }
     return notes
 }

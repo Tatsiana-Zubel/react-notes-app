@@ -22,3 +22,20 @@ code {
       margin-right: 1rem;
     }
 }
+
+.note-container {
+  .note-name, 
+  .message {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+  }
+  
+  .note-name {
+    font-weight: bold;
+  }
+
+  .editable {
+    border: 2px solid #178595;
+  }
+}

@@ -3,7 +3,6 @@ import {AlertContext} from './alertContext';
 import {alertReducer} from './alertReducer';
 import {HIDE_ALERT, SHOW_ALERT} from '../types';
 
-
 export const AlertState = ({children}) => {
     const [state, dispatch] = useReducer(alertReducer, {visible: false})
 
@@ -21,7 +20,7 @@ export const AlertState = ({children}) => {
             show, hide,
             alert: state
         }}> 
-            {children}
+        {children}
         </AlertContext.Provider>
     )
 }
